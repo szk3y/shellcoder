@@ -10,6 +10,6 @@ entry:
   ret
 
 hello_begin:
-  db 'Hello 32bit', 0x0a
+  db 'Hello x86', 0x0a
 
 hello_end:

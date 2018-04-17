@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "caller.h"
+typedef void (*caller_t)(void);
 
 int main(int argc, char** argv)
 {
@@ -14,6 +14,7 @@ int main(int argc, char** argv)
   void* return_addr;
   int fd;
   struct stat st;
+  caller_t call_shellcode;
 
   if(argc != 3) {
     fprintf(stderr, "Usage: %s <shellcode> <base_addr>\n", argv[0]);
@@ -27,15 +28,17 @@ int main(int argc, char** argv)
   }
   fstat(fd, &st);
   requested_addr = NULL + strtoll(argv[2], NULL, 16);
-  return_addr = mmap(requested_addr, st.st_size, PROT_READ | PROT_EXEC, MAP_SHARED, fd, 0);
+  return_addr = mmap(requested_addr, st.st_size,
+      PROT_READ | PROT_EXEC, MAP_SHARED, fd, 0);
   if(return_addr != requested_addr) {
     fputs("Failed to mmap at requested address\n", stderr);
     fprintf(stderr, "requested_addr = %p\n", requested_addr);
-    fprintf(stderr, "return_addr = %p\n", return_addr);
+    fprintf(stderr, "return_addr    = %p\n", return_addr);
     exit(1);
   }
 
-  call_func(return_addr);
+  call_shellcode = return_addr;
+  call_shellcode();
 
   munmap(return_addr, st.st_size);
   close(fd);

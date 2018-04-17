@@ -8,7 +8,7 @@ cmd
 peda-*
 tags
 
-shell_loader32
-shell_loader64
-test/hello32
-test/hello64
+shellcoder_x86
+shellcoder_x64
+test/hello_x86
+test/hello_x64

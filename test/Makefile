@@ -1,6 +1,7 @@
 all:
-	nasm hello64.asm
-	nasm hello32.asm
+	nasm hello_x64.asm
+	nasm hello_x86.asm
+
 .PHONY: clean
 clean:
-	$(RM) hello64 hello32
+	$(RM) hello_x64 hello_x86
