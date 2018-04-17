@@ -1,0 +1,14 @@
+*.bin
+*.d
+*.o
+*.swp
+*.txt
+.gdb_history
+cmd
+peda-*
+tags
+
+shell_loader32
+shell_loader64
+test/hello32
+test/hello64
