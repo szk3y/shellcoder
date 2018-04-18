@@ -1,5 +1,5 @@
 [bits 32]
-[org 0x1234000]
+[org 0x12345678]
 
 entry:
   mov edx, hello_end-hello_begin ; size

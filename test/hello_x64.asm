@@ -1,5 +1,5 @@
 [bits 64]
-[org 0x1234000]
+[org 0x12345678]
 
 entry:
   mov rdx, hello_end-hello_begin ; size
