@@ -8,7 +8,7 @@ cmd
 peda-*
 tags
 
-shellcoder_x86
-shellcoder_x64
+shellcoder_32bit
+shellcoder_64bit
 test/hello_x86
 test/hello_x64
