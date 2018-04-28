@@ -6,9 +6,31 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define PAGE_SIZE 0x1000
+#define PAGE_SIZE  0x1000
+#define PRINT_RANGE 0x100
 
 typedef void (*caller_t)(void);
+
+void print_memory(const unsigned char* memory, size_t size)
+{
+  memory -= (size_t)memory & 0xf;
+  for(size_t i = 0; i < size; i++) {
+    if(i % 16 == 0) {
+      printf("%08zx | ", (size_t)(memory+i));
+    }
+    printf("%02hhx", memory[i]);
+    if(i % 16 == 15) {
+      putchar('\n');
+    } else if(i % 16 == 7) {
+      putchar(' ');
+      putchar(' ');
+    } else {
+      putchar(' ');
+    }
+  }
+  putchar('\n');
+  fflush(stdout);
+}
 
 void read_shellcode(void* page_base, long long offset, int fd)
 {
@@ -66,9 +88,14 @@ int main(int argc, char** argv)
   }
 
   read_shellcode(return_addr, offset, fd);
+  puts("Before:");
+  print_memory(NULL + req_addr, PRINT_RANGE);
 
   call_shellcode = return_addr + offset;
   call_shellcode();
+
+  puts("After:");
+  print_memory(NULL + req_addr, PRINT_RANGE);
 
   munmap(return_addr, st.st_size + offset);
   close(fd);
