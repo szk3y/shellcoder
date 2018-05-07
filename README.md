@@ -1,1 +1,2 @@
 # shellcoder
+Simple shellcode loader
