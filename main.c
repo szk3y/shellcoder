@@ -9,7 +9,7 @@
 #define PAGE_SIZE  0x1000
 #define PRINT_RANGE 0x100
 
-typedef void (*caller_t)(void);
+typedef size_t (*caller_t)(void);
 
 void print_memory(const unsigned char* memory, size_t size)
 {
@@ -56,6 +56,7 @@ int main(int argc, char** argv)
   void* aligned_req_addr;
   void* return_addr;
   int fd;
+  size_t return_value;
   struct stat st;
   caller_t call_shellcode;
 
@@ -92,10 +93,12 @@ int main(int argc, char** argv)
   print_memory(NULL + req_addr, PRINT_RANGE);
 
   call_shellcode = return_addr + offset;
-  call_shellcode();
+  return_value = call_shellcode();
 
   puts("After:");
   print_memory(NULL + req_addr, PRINT_RANGE);
+
+  printf("return_value = 0x%zx\n", return_value);
 
   munmap(return_addr, st.st_size + offset);
   close(fd);
