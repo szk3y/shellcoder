@@ -77,7 +77,7 @@ int main(int argc, char** argv)
   return_addr = mmap(aligned_req_addr, st.st_size + offset,
       PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE | MAP_ANONYMOUS,
       -1, 0);
-  if(return_addr == (void*)(-1)) {
+  if(return_addr == MAP_FAILED) {
     perror("mmap");
     exit(1);
   }
